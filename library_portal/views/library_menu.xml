@@ -1,0 +1,22 @@
+<odoo>
+    <!-- 1. Định nghĩa Actions để mở giao diện -->
+    <record id="action_library_book" model="ir.actions.act_window">
+        <field name="name">Danh sách Sách</field>
+        <field name="res_model">library.book</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_library_borrow_request" model="ir.actions.act_window">
+        <field name="name">Yêu cầu mượn sách</field>
+        <field name="res_model">library.borrow.request</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- 2. Định nghĩa Menu -->
+    <!-- Menu gốc (Root Menu) -->
+    <menuitem id="menu_library_root" name="Thư Viện" sequence="10"/>
+
+    <!-- Các Menu con liên kết với Action -->
+    <menuitem id="menu_library_book" name="Quản lý Sách" parent="menu_library_root" action="action_library_book"/>
+    <menuitem id="menu_library_borrow" name="Yêu cầu mượn" parent="menu_library_root" action="action_library_borrow_request"/>
+</odoo>

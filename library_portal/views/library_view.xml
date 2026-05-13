@@ -1,0 +1,81 @@
+<odoo>
+    <!-- ================= VIEW CHO SÁCH (library.book) ================= -->
+    
+    <!-- list View: Hiển thị danh sách bản ghi theo dạng bảng [3] -->
+    <record id="view_library_book_list" model="ir.ui.view">
+        <field name="name">library.book.list</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <list string="Danh sách Sách">
+                <field name="name"/>
+                <field name="author"/>
+                <field name="isbn"/>
+                <field name="quantity"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View: Hiển thị chi tiết 1 bản ghi dùng để nhập liệu [3, 4] -->
+    <record id="view_library_book_form" model="ir.ui.view">
+        <field name="name">library.book.form</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <form string="Thông tin Sách">
+                <!-- Header chứa thanh trạng thái (statusbar) [5] -->
+                <header>
+                    <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
+                </header>
+                <!-- Thẻ sheet bao bọc nội dung chính của form [6, 7] -->
+                <sheet>
+                    <group string="Thông tin chung" col="2">
+                        <field name="name"/>
+                        <field name="author"/>
+                        <field name="isbn"/>
+                    </group>
+                    <group string="Chi tiết">
+                        <field name="quantity"/>
+                        <field name="image" widget="image"/>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ================= VIEW CHO YÊU CẦU MƯỢN (library.borrow.request) ================= -->
+    
+    <record id="view_library_borrow_list" model="ir.ui.view">
+        <field name="name">library.borrow.list</field>
+        <field name="model">library.borrow.request</field>
+        <field name="arch" type="xml">
+            <list string="Danh sách Yêu cầu">
+                <field name="name"/>
+                <field name="book_id"/>
+                <field name="request_date"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_library_borrow_form" model="ir.ui.view">
+        <field name="name">library.borrow.form</field>
+        <field name="model">library.borrow.request</field>
+        <field name="arch" type="xml">
+            <form string="Chi tiết Yêu cầu">
+                <header>
+                    <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
+                </header>
+                <sheet>
+                    <group col="2">
+                        <field name="name"/>
+                        <field name="email" required="1"/> <!-- Bắt buộc nhập [8] -->
+                        <field name="phone"/>
+                        <field name="book_id"/>
+                        <field name="request_date"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

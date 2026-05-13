@@ -1,0 +1,116 @@
+<odoo>
+    <template id="books_list_template" name="Danh sách sách">
+        <t t-call="website.layout">
+            <div class="container mt16">
+                <div class="row">
+                    <div class="col-12">
+                        <h1>Danh sách sách</h1>
+                    </div>
+                </div>
+                <t t-if="books">
+                    <div class="row mt16">
+                        <t t-foreach="books" t-as="book">
+                            <div class="col-md-4 mb16">
+                                <div class="card h-100 shadow-sm">
+                                    <div class="card-body">
+                                        <h4 class="card-title"><t t-esc="book.name"/></h4>
+                                        <p><strong>Tác giả:</strong> <t t-esc="book.author or '-'"/></p>
+                                        <p><strong>ISBN:</strong> <t t-esc="book.isbn or '-'"/></p>
+                                        <p><strong>Số lượng:</strong> <t t-esc="book.quantity"/></p>
+                                        <a t-att-href="'/library/book/%s' % book.id" class="btn btn-primary">Xem chi tiết</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </t>
+                <t t-else="">
+                    <div class="row mt16">
+                        <div class="col-12">
+                            <div class="alert alert-info">Hiện không có sách nào.</div>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <template id="book_detail_template" name="Chi tiết sách">
+        <t t-call="website.layout">
+            <div class="container mt16">
+                <div class="row">
+                    <div class="col-12">
+                        <h1><t t-esc="book.name"/></h1>
+                        <p><strong>Tác giả:</strong> <t t-esc="book.author or '-'"/></p>
+                        <p><strong>ISBN:</strong> <t t-esc="book.isbn or '-'"/></p>
+                        <p><strong>Số lượng còn:</strong> <t t-esc="book.quantity"/></p>
+                        <p><strong>Trạng thái:</strong> <t t-esc="book.state == 'available' and 'Có sẵn' or 'Hết sách'"/></p>
+                        <t t-if="book.image">
+                            <div class="mb16">
+                                <img t-att-src="'/web/image/library.book/' + str(book.id) + '/image'" class="img-fluid"/>
+                            </div>
+                        </t>
+                        <div class="mb16">
+                            <strong>Mô tả:</strong>
+                            <p><t t-esc="book.description or 'Không có mô tả.'"/></p>
+                        </div>
+                        <a t-att-href="'/library/borrow/%s' % book.id" class="btn btn-success">Đăng ký mượn</a>
+                        <a href="/library/books" class="btn btn-link">Quay lại danh sách</a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="borrow_form_template" name="Đăng ký mượn">
+        <t t-call="website.layout">
+            <div class="container mt16">
+                <div class="row">
+                    <div class="col-12 col-lg-8 offset-lg-2">
+                        <h1>Đăng ký mượn sách</h1>
+                        <t t-if="error">
+                            <div class="alert alert-danger"><t t-esc="error"/></div>
+                        </t>
+                        <form action="/library/borrow/submit" method="post">
+                            <div class="mb-3">
+                                <label class="form-label">Tên</label>
+                                <input type="text" name="name" class="form-control" t-att-value="name or ''" required="required"/>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" name="email" class="form-control" t-att-value="email or ''" required="required"/>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Số điện thoại</label>
+                                <input type="text" name="phone" class="form-control" t-att-value="phone or ''"/>
+                            </div>
+                            <input type="hidden" name="book_id" t-att-value="book.id"/>
+                            <div class="mb-3">
+                                <label class="form-label">Sách</label>
+                                <input type="text" class="form-control" t-att-value="book.name" disabled="disabled"/>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Gửi yêu cầu</button>
+                            <a t-att-href="'/library/book/%s' % book.id" class="btn btn-link">Quay lại</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="thank_you_template" name="Cảm ơn">
+        <t t-call="website.layout">
+            <div class="container mt16">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="alert alert-success">
+                            <h2>Yêu cầu mượn đã được gửi!</h2>
+                            <p>Mã yêu cầu: <strong><t t-esc="req_id or '---'"/></strong></p>
+                        </div>
+                        <a href="/library/books" class="btn btn-primary">Quay lại danh sách sách</a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
